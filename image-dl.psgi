@@ -24,6 +24,11 @@ my $app = sub {
 	if ($env->{PATH_INFO} eq "/image_dl") {
 		my $str = $env->{HTTP_URL};
 
+		unless (defined $str) {
+			$msg = "No url http header supplied.\n";
+			return [ '400', [ 'Content-Type' => $content, 'Content-Length' => length ($msg) ], [ $msg ], ];
+		}
+
 		unless ((substr ($str, 0, 7) eq 'http://') || (substr ($str, 0, 8) eq 'https://')) {
 			$msg = "Incorrect URL\n";
 			return [ '400', [ 'Content-Type' => $content, 'Content-Length' => length ($msg) ], [ $msg ], ];
